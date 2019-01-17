@@ -131,3 +131,35 @@ func (i Int) Ptr() *int64 {
 func (i Int) IsZero() bool {
 	return !i.Valid
 }
+
+
+func (i Int) Plus(x Int) Int {
+	if i.Valid && x.Valid {
+		return IntFrom(i.Int64 + x.Int64)
+	}
+	return NewInt(0, false)
+}
+
+func (i Int) Minus(subtrahend Int) Int {
+	if i.Valid && subtrahend.Valid {
+		return IntFrom(i.Int64 - subtrahend.Int64)
+	}
+	return NewInt(0, false)
+}
+
+func (i Int) DividedBy(denominator Int) Int {
+	if denominator.ValueOrZero() == 0 {
+		return NewInt(0, false)
+	}
+	if i.Valid && denominator.Valid {
+		return IntFrom(i.Int64 / denominator.Int64)
+	}
+	return NewInt(0, false)
+}
+
+func (i Int) Times(b Int) Int {
+	if i.Valid && b.Valid {
+		return IntFrom(i.Int64 * b.Int64)
+	}
+	return NewInt(0, false)
+}
