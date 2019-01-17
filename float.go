@@ -137,3 +137,31 @@ func (f Float) Ptr() *float64 {
 func (f Float) IsZero() bool {
 	return !f.Valid
 }
+
+func (f Float) Plus(x Float) Float {
+	if f.Valid && x.Valid {
+		return FloatFrom(f.Float64 + x.Float64)
+	}
+	return NewFloat(0, false)
+}
+
+func (f Float) Minus(subtrahend Float) Float {
+	if f.Valid && subtrahend.Valid {
+		return FloatFrom(f.Float64 - subtrahend.Float64)
+	}
+	return NewFloat(0, false)
+}
+
+func (f Float) DividedBy(denominator Float) Float {
+	if f.Valid && denominator.Valid {
+		return FloatFrom(f.Float64 / denominator.Float64)
+	}
+	return NewFloat(0, false)
+}
+
+func (f Float) Times(b Float) Float {
+	if f.Valid && b.Valid {
+		return FloatFrom(f.Float64 * b.Float64)
+	}
+	return NewFloat(0, false)
+}

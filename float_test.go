@@ -197,6 +197,98 @@ func TestFloatValueOrZero(t *testing.T) {
 	}
 }
 
+func TestFloatPlus(t *testing.T) {
+	a := NewFloat(1.2345, true)
+	b := NewFloat(5.2, true)
+	c := NewFloat(0, false)
+
+	if a.Plus(b).ValueOrZero() != 6.4345 {
+		t.Error("unexpected ValueOrZero", a.Plus(b).ValueOrZero())
+	}
+	if b.Plus(a).ValueOrZero() != 6.4345 {
+		t.Error("unexpected ValueOrZero", b.Plus(a).ValueOrZero())
+	}
+	if a.Plus(c).Valid {
+		t.Error("unexpected Valid", a.Plus(c).Valid)
+	}
+	if c.Plus(a).Valid {
+		t.Error("unexpected Valid", a.Plus(c).Valid)
+	}
+	if c.Plus(c).Valid {
+		t.Error("unexpected Valid", a.Plus(c).Valid)
+	}
+}
+
+func TestFloatMinus(t *testing.T) {
+	a := NewFloat(1.2, true)
+	b := NewFloat(5.2, true)
+	c := NewFloat(0, false)
+
+	if a.Minus(b).ValueOrZero() != 1.2 - 5.2 {
+		t.Error("unexpected ValueOrZero", a.Minus(b).ValueOrZero())
+	}
+	if b.Minus(a).ValueOrZero() != 5.2 - 1.2 {
+		t.Error("unexpected ValueOrZero", b.Minus(a).ValueOrZero())
+	}
+	if a.Minus(c).Valid {
+		t.Error("unexpected Valid", a.Minus(c).Valid)
+	}
+	if c.Minus(a).Valid {
+		t.Error("unexpected Valid", a.Plus(c).Valid)
+	}
+	if c.Minus(c).Valid {
+		t.Error("unexpected Valid", a.Plus(c).Valid)
+	}
+}
+
+func TestFloatDividedBy(t *testing.T) {
+	a := NewFloat(10, true)
+	b := NewFloat(4, true)
+	c := NewFloat(0, false)
+	d := NewFloat(0, true)
+
+	if a.DividedBy(b).ValueOrZero() != 2.5 {
+		t.Error("unexpected ValueOrZero", a.DividedBy(b).ValueOrZero())
+	}
+	if b.DividedBy(a).ValueOrZero() != 0.4 {
+		t.Error("unexpected ValueOrZero", b.DividedBy(a).ValueOrZero())
+	}
+	if a.DividedBy(c).Valid {
+		t.Error("unexpected Valid", a.DividedBy(c).Valid)
+	}
+	if c.DividedBy(c).Valid {
+		t.Error("unexpected Valid", c.DividedBy(c).Valid)
+	}
+	if c.DividedBy(a).Valid {
+		t.Error("unexpected Valid", c.DividedBy(a).Valid)
+	}
+	if a.DividedBy(d) != FloatFrom(math.Inf(1)) {
+		t.Error("unexpected Value", a.DividedBy(d))
+	}
+}
+
+func TestFloatTimes(t *testing.T) {
+	a := NewFloat(1.2, true)
+	b := NewFloat(5.2, true)
+	c := NewFloat(0, false)
+
+	if a.Times(b).ValueOrZero() != 6.24 {
+		t.Error("unexpected ValueOrZero", a.Times(b).ValueOrZero())
+	}
+	if b.Times(a).ValueOrZero() != 6.24 {
+		t.Error("unexpected ValueOrZero", b.Times(a).ValueOrZero())
+	}
+	if a.Times(c).Valid {
+		t.Error("unexpected Valid", a.Times(c).Valid)
+	}
+	if c.Times(a).Valid {
+		t.Error("unexpected Valid", a.Times(c).Valid)
+	}
+	if c.Times(c).Valid {
+		t.Error("unexpected Valid", a.Times(c).Valid)
+	}
+}
+
 func assertFloat(t *testing.T, f Float, from string) {
 	if f.Float64 != 1.2345 {
 		t.Errorf("bad %s float: %f ≠ %f\n", from, f.Float64, 1.2345)

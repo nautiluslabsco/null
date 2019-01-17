@@ -203,6 +203,106 @@ func TestIntValueOrZero(t *testing.T) {
 	}
 }
 
+func TestIntPlus(t *testing.T) {
+	a := NewInt(1, true)
+	b := NewInt(5, true)
+	c := NewInt(0, false)
+
+	if a.Plus(b).ValueOrZero() != 6 {
+		t.Error("unexpected ValueOrZero", a.Plus(b).ValueOrZero())
+	}
+	if b.Plus(a).ValueOrZero() != 6 {
+		t.Error("unexpected ValueOrZero", b.Plus(a).ValueOrZero())
+	}
+	if a.Plus(c).Valid {
+		t.Error("unexpected Valid", a.Plus(c).Valid)
+	}
+	if c.Plus(a).Valid {
+		t.Error("unexpected Valid", a.Plus(c).Valid)
+	}
+	if c.Plus(c).Valid {
+		t.Error("unexpected Valid", a.Plus(c).Valid)
+	}
+}
+
+func TestIntMinus(t *testing.T) {
+	a := NewInt(1, true)
+	b := NewInt(5, true)
+	c := NewInt(0, false)
+
+	if a.Minus(b).ValueOrZero() != -4 {
+		t.Error("unexpected ValueOrZero", a.Minus(b).ValueOrZero())
+	}
+	if b.Minus(a).ValueOrZero() != 4 {
+		t.Error("unexpected ValueOrZero", b.Minus(a).ValueOrZero())
+	}
+	if a.Minus(c).Valid {
+		t.Error("unexpected Valid", a.Minus(c).Valid)
+	}
+	if c.Minus(a).Valid {
+		t.Error("unexpected Valid", a.Plus(c).Valid)
+	}
+	if c.Minus(c).Valid {
+		t.Error("unexpected Valid", a.Plus(c).Valid)
+	}
+}
+
+func TestIntDividedBy(t *testing.T) {
+	a := NewInt(1, true)
+	b := NewInt(5, true)
+	c := NewInt(0, false)
+	d := NewInt(0, true)
+
+	if a.DividedBy(b).ValueOrZero() != 0 {
+		t.Error("unexpected ValueOrZero", a.DividedBy(b).ValueOrZero())
+	}
+	if b.DividedBy(a).ValueOrZero() != 5 {
+		t.Error("unexpected ValueOrZero", b.DividedBy(a).ValueOrZero())
+	}
+	if a.DividedBy(c).Valid {
+		t.Error("unexpected Valid", a.DividedBy(c).Valid)
+	}
+	if c.DividedBy(c).Valid {
+		t.Error("unexpected Valid", c.DividedBy(c).Valid)
+	}
+	if c.DividedBy(a).Valid {
+		t.Error("unexpected Valid", c.DividedBy(a).Valid)
+	}
+	if a.DividedBy(d).Valid {
+		t.Error("unexpected Valid", a.DividedBy(d))
+	}
+}
+
+func TestIntTimes(t *testing.T) {
+	a := NewInt(2, true)
+	b := NewInt(5, true)
+	c := NewInt(0, false)
+	d := NewInt(0, true)
+
+	if a.Times(b).ValueOrZero() != 10 {
+		t.Error("unexpected ValueOrZero", a.Times(b).ValueOrZero())
+	}
+	if b.Times(a).ValueOrZero() != 10 {
+		t.Error("unexpected ValueOrZero", b.Times(a).ValueOrZero())
+	}
+	if a.Times(c).Valid {
+		t.Error("unexpected Valid", a.Times(c).Valid)
+	}
+	if c.Times(a).Valid {
+		t.Error("unexpected Valid", a.Times(c).Valid)
+	}
+	if c.Times(c).Valid {
+		t.Error("unexpected Valid", a.Times(c).Valid)
+	}
+	v := a.Times(d)
+	if !v.Valid {
+		t.Error("unexpected Valid", v.Valid)
+	}
+	if v.ValueOrZero() != 0 {
+		t.Error("unexpected ValueOrZero", v.ValueOrZero())
+	}
+}
+
 func assertInt(t *testing.T, i Int, from string) {
 	if i.Int64 != 12345 {
 		t.Errorf("bad %s int: %d ≠ %d\n", from, i.Int64, 12345)
